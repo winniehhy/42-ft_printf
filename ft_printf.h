@@ -13,20 +13,18 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-# include <unistd.h>
+//# include <unistd.h>
 # include <stdarg.h>
 # include <limits.h>
 
 # include <stdio.h>
 
-int	ft_putchar(int c);
+int	ft_putchar(char c);
+int ft_putnbr(long number);
+int ft_putnbr_hexa(unsigned long number, char uppercase_flag);
+int	ft_putptr(void *ptr);
 int	ft_putstr(char *str);
-int	ft_putnbr(int n);
-int	ft_putnbr_u(unsigned int n);
-int	printf_hex_l(unsigned long long n);
-int	printf_hex_u(unsigned long long n);
-int	printf_pointer(unsigned long long p);
-int	printf_specifiers(va_list args, char format, int a);
-int	ft_printf(const char *format, ...);
+static int	ft_conversion(const char spec, va_list vargs);
+int	ft_printf(char const *format, ...);
 
 #endif
