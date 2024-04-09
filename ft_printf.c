@@ -12,98 +12,51 @@
 
 #include "ft_printf.h"
 
-int	printf_hex_l(unsigned long long n)
+static int	ft_conversion(const char spec, va_list vargs)
 {
-	int charCount = 0;
-
-    if (n >= 16) {
-        charCount += printf_hex_l(n / 16);
-        charCount += printf_hex_l(n % 16);
-    }
-
-    else {
-        if (n < 10) {
-            charCount += ft_putchar(n + '0');
-        }
-        else {
-            charCount += ft_putchar(n + 'a' - 10);
-        }
-    }
-    return charCount;
+	if (spec == 'c')
+		return (ft_putchar(va_arg(vargs, int)));
+	else if (spec == 'u')
+		return (ft_putnbr(va_arg(vargs, unsigned int)));
+	else if ((spec == 'i') || (spec == 'd'))
+		return (ft_putnbr(va_arg(vargs, int)));
+	else if (spec == 's')
+		return (ft_putstr(va_arg(vargs, char *)));
+	else if (spec == 'x' || spec == 'X')
+		return (ft_putnbr_hexa(va_arg(vargs, unsigned int),spec));
+	else if (spec == 'p')
+		return (ft_putptr(va_arg(vargs, void *)));
+	else if (spec == '%')
+		return (ft_putchar('%'));
+	return (-1);
 }
 
-int	printf_hex_u(unsigned long long n)
+int	ft_printf(char const *format, ...)
 {
-	int charCount = 0;
+	va_list	vargs;
+	int		len;
+	int		check;
 
-    if (n >= 16) {
-        charCount += printf_hex_u(n / 16);
-        charCount += printf_hex_u(n % 16);
-    }
-    else {
-        if (n < 10) {
-            charCount += ft_putchar(n + '0');
-        }
-        else {
-            charCount += ft_putchar(n + 'A' - 10);
-        }
-    }
-    return charCount;
-}
-
-int	printf_pointer(unsigned long long p)
-{
-	int charCount = 0;
-
-    charCount += ft_putstr("0x");
-
-    charCount += printf_hex_l(p);
-
-    return charCount;
-}
-
-int	printf_specifiers(va_list args, char format, int a)
-{
-	if (format == 'd')
-		a += ft_putnbr(va_arg(args, int));
-	else if (format == 's')
-		a += ft_putstr(va_arg(args, char *));
-	else if (format == 'c')
-		a += ft_putchar(va_arg(args, int));
-	else if (format == '%')
-		a += ft_putchar(37);
-	else if (format == 'i')
-		a += ft_putnbr(va_arg(args, int));
-	else if (format == 'u')
-		a += ft_putnbr_u(va_arg(args, unsigned int));
-	else if (format == 'x')
-		a += printf_hex_l(va_arg(args, unsigned int));
-	else if (format == 'X')
-		a += printf_hex_u(va_arg(args, unsigned int));
-	else if (format == 'p')
-		a += printf_pointer(va_arg(args, unsigned long long));
-	return (a);
-}
-
-int	ft_printf(const char *format, ...)
-{
-	int		a;
-	va_list	args;
-
-	va_start(args, format);
-	a = 0;
-	while (*format != '\0')
+	va_start(vargs, format);
+	len = 0;
+	while (*format)
 	{
 		if (*format == '%')
 		{
-			format++;
-			a = printf_specifiers(args, *format, a);
+			check = ft_conversion(*(++format), vargs);
+			if (check == -1)
+				return (-1);
+			len += check;
 		}
 		else
-			a += write(1, format, 1);
+		{
+			if (write(1, format, 1) == -1)
+				return (-1);
+			len++;
+		}
 		format++;
 	}
-	va_end(args);
-	return (a);
+	va_end(vargs);
+	return (len);
 }
 
