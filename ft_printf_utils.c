@@ -12,68 +12,105 @@
 
 #include "ft_printf.h"
 
-int	ft_putchar(int c)
+int	ft_putchar(char c)
 {
-	write(1, &c, 1);
-	return (1);
+	return (write(1, &c, 1));
+}
+
+int ft_putnbr(long number) {
+    long digit;
+    int length;
+    int result;
+
+    length = 0;
+
+    if (number < 0) {
+        if (write(1, "-", 1) == -1)
+            return -1;
+        length += 1;
+        number *= -1;
+    }
+
+    digit = number % 10 + '0';
+
+    if (number > 9) {
+        result = ft_putnbr(number / 10);
+        if (result == -1)
+            return -1;
+        length += result;
+    }
+
+    if (write(1, &digit, 1) == -1)
+        return -1;
+
+    length += 1;
+    return length;
+}
+
+int ft_putnbr_hexa(unsigned long number, char uppercase_flag) 
+{
+    int length;
+    int remainder;
+    char *base;
+    int result;
+
+    remainder = 0;
+    length = 0;
+
+    if (uppercase_flag == 'X')
+        base = "0123456789ABCDEF";
+    else
+        base = "0123456789abcdef";
+
+    if (number > 15) {
+        result = ft_putnbr_hexa((number / 16), uppercase_flag);
+        if (result == -1)
+            return -1;
+        length += result;
+    }
+
+    remainder = number % 16;
+    if (write(1, &base[remainder], 1) == -1)
+        return -1;
+
+    length += 1;
+    return length;
+}
+
+int	ft_putptr(void *ptr)
+{
+	int	len;
+	int	aux;
+
+	len = 0;
+	aux = 0;
+	if (ft_putstr("0x") == -1)
+		return (-1);
+	len += 2;
+	aux = ft_putnbr_hexa((unsigned long)ptr, 'x');
+	if (aux == -1)
+		return (-1);
+	len += aux;
+	return (len);
 }
 
 int	ft_putstr(char *str)
 {
-	int	i;
+	int	len;
 
-	i = 0;
-	if (str == NULL)
+	if (!str)
 	{
-		i += ft_putstr("(null)");
-		return (i);
+		if (write (1, "(null)", 6) == -1)
+			return (-1);
+		return (6);
 	}
+	len = 0;
 	while (*str != '\0')
 	{
-		i += ft_putchar(*str);
+		if (write(1, str, 1) == -1)
+			return (-1);
+		len++;
 		str++;
 	}
-	return (i);
-}
-
-int	ft_putnbr(int n)
-{
-	int	a;
-
-	a = 0;
-	if (n == -2147483648)
-	{
-		a += ft_putchar('-');
-		a += ft_putchar('2');
-		n = 147483648;
-	}
-	if (n < 0)
-	{
-		a += ft_putchar('-');
-		n = -n;
-	}
-	while (n >= 10)
-	{
-		a += ft_putnbr(n / 10);
-		n %= 10;
-	}
-	a += ft_putchar(n + 48);
-	return (a);
-}
-
-int	ft_putnbr_u(unsigned int n)
-{
-	int	i;
-
-	i = 0;
-	if (n > 9)
-	{
-		i += ft_putnbr(n / 10);
-		i += ft_putnbr(n % 10);
-	}
-	else
-	{
-		i += ft_putchar(n + 48);
-	}
-	return (i);
+	return (len);
 }
