@@ -60,3 +60,15 @@ int	ft_printf(char const *format, ...)
 	return (len);
 }
 
+int main()
+{
+	ft_printf("Hello, %s! The answer is %d.\n", "world", 42);
+    ft_printf("Unsigned integer: %u\n", 4294967295U);
+    ft_printf("Hexadecimal (lowercase): %x\n", 0xABCD1234);
+    ft_printf("Hexadecimal (uppercase): %X\n", 0xABCD1234);
+    ft_printf("Pointer: %p\n", &main);
+    ft_printf("Percent sign: %%\n");
+    ft_printf("Character: %c\n", 'A');
+    return 0;
+}
+
