@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static int	ft_conversion(const char spec, va_list vargs)
+int	ft_conversion(const char spec, va_list vargs)
 {
 	if (spec == 'c')
 		return (ft_putchar(va_arg(vargs, int)));
