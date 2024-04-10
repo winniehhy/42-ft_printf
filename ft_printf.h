@@ -21,10 +21,10 @@
 
 int	ft_putchar(char c);
 int ft_putnbr(long number);
-int ft_putnbr_hexa(unsigned long number, char uppercase_flag);
+int ft_putnbr_hexa(unsigned long number, char uppercase);
 int	ft_putptr(void *ptr);
 int	ft_putstr(char *str);
-static int	ft_conversion(const char spec, va_list vargs);
+int	ft_conversion(const char spec, va_list vargs);
 int	ft_printf(char const *format, ...);
 
 #endif
