@@ -44,10 +44,10 @@ int ft_putnbr(long number) {
         return -1;
 
     length += 1;
-    return length;
+    return (length);
 }
 
-int ft_putnbr_hexa(unsigned long number, char uppercase_flag) 
+int ft_putnbr_hexa(unsigned long number, char uppercase) 
 {
     int length;
     int remainder;
@@ -57,46 +57,46 @@ int ft_putnbr_hexa(unsigned long number, char uppercase_flag)
     remainder = 0;
     length = 0;
 
-    if (uppercase_flag == 'X')
+    if (uppercase == 'X')
         base = "0123456789ABCDEF";
     else
         base = "0123456789abcdef";
 
     if (number > 15) {
-        result = ft_putnbr_hexa((number / 16), uppercase_flag);
+        result = ft_putnbr_hexa((number / 16), uppercase);
         if (result == -1)
-            return -1;
+            return (-1);
         length += result;
     }
-
+    
     remainder = number % 16;
     if (write(1, &base[remainder], 1) == -1)
-        return -1;
+        return (-1);
 
     length += 1;
-    return length;
+    return (length);
 }
 
 int	ft_putptr(void *ptr)
 {
-	int	len;
-	int	aux;
+	int	length;
+	int	result;
 
-	len = 0;
-	aux = 0;
+	length = 0;
+	result = 0;
 	if (ft_putstr("0x") == -1)
 		return (-1);
-	len += 2;
-	aux = ft_putnbr_hexa((unsigned long)ptr, 'x');
-	if (aux == -1)
+	length += 2;
+	result = ft_putnbr_hexa((unsigned long)ptr, 'x');
+	if (result == -1)
 		return (-1);
-	len += aux;
+	length += result;
 	return (len);
 }
 
 int	ft_putstr(char *str)
 {
-	int	len;
+	int	length;
 
 	if (!str)
 	{
@@ -104,13 +104,13 @@ int	ft_putstr(char *str)
 			return (-1);
 		return (6);
 	}
-	len = 0;
+	length = 0;
 	while (*str != '\0')
 	{
 		if (write(1, str, 1) == -1)
 			return (-1);
-		len++;
+		length++;
 		str++;
 	}
-	return (len);
+	return (length);
 }
