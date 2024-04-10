@@ -34,11 +34,11 @@ int	ft_conversion(const char spec, va_list vargs)
 int	ft_printf(char const *format, ...)
 {
 	va_list	vargs;
-	int		len;
+	int		length;
 	int		check;
 
 	va_start(vargs, format);
-	len = 0;
+	length = 0;
 	while (*format)
 	{
 		if (*format == '%')
@@ -46,18 +46,18 @@ int	ft_printf(char const *format, ...)
 			check = ft_conversion(*(++format), vargs);
 			if (check == -1)
 				return (-1);
-			len += check;
+			length += check;
 		}
 		else
 		{
 			if (write(1, format, 1) == -1)
 				return (-1);
-			len++;
+			length++;
 		}
 		format++;
 	}
 	va_end(vargs);
-	return (len);
+	return (length);
 }
 
 int main()
