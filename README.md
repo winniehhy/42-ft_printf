@@ -1,5 +1,5 @@
 <h2>About the project </h2>
-<p>" This project is pretty straight forward. You will recode printf. You will mainly learn how to use variadic arguments. "</p>
+<p> This project is pretty straight forward. Basically recode printf function and it's library. You will mainly learn how to use variadic arguments. </p>
 
 Basically is just replicating the printf function ( %c, %s, %d, %i, %u, %x, %X, %p, %%);
 
